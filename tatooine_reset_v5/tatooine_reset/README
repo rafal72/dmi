@@ -1,0 +1,26 @@
+Update instructions for Tatooine/T+ 2x4 nodes. Do NOT use on any other platform.
+
+To dump all the current DMI and BMC info
+
+cd tatooine_reset
+./tatooine_reset_to_node_type
+
+The above command will save off and dump the current DMI and BMC info using SuperMicro's tools.
+
+./tatooine_reset_to_node_type H###[CES](#####)(-NE)
+
+If you are running on a new build of ember where the node type is already recognized, you can cut/copy this to minimize human error:
+
+./tatooine_reset_to_node_type $(jq -r .nodeType /sf/etc/hardware/config.json)
+
+The above commands will flash BMC info and DMI code to the CSE/SuperMicro agreed settings.
+
+
+Note that you will not see System/Product Serial or Chassis Serial in the DMI info. This is data will be populated with the HSB-91 updates on after a full reboot.
+This may cause new failures because these pieces of information are missing, but we're working as fast as we can to get this code implemented.
+
+If you absolutely need these values to get unblocked, please run:
+
+./tatooine_hack_job
+
+This will manually flash the DMI values that HSB-91 will provide to DMI.

@@ -1,0 +1,249 @@
+#!/bin/bash
+
+function dump_info()
+{
+    dmidecode -t0 -t1 -t2
+    ./ipmicfg/IPMICFG-Linux.x86_64 -fru list
+    ./ipmicfg/IPMICFG-Linux.x86_64 -tp info
+}
+
+ORIGINAL_INFO=/var/log/tatooine_original_dmi_bmc_info.txt
+if [[ ! -e "${ORIGINAL_INFO}" ]]; then
+   echo "creating ${ORIGINAL_INFO}"
+   dump_info > ${ORIGINAL_INFO}
+fi
+
+if [[ $# == 1 && "$1" =~ ^H ]]; then
+    echo "Flashing DMI and BMC info. A full reboot is required for the DMI info to be reported correctly."
+    PRODUCT="$1"
+else
+    echo "Usage: $0 H###[CES](#####)(-NE)?"
+    echo "   this will reflash DMI and BMC values to NetApp/SuperMicro manufacturing defaults"
+    dump_info
+
+    exit 1
+fi
+
+NODE_TYPE=$(echo "${PRODUCT}" | sed 's/-.*//')
+
+if [[ "${NODE_TYPE}" == "H300E" ]]; then
+    PRODUCT_NAME="${NODE_TYPE}"
+    SHORT_NT="${NODE_TYPE}"
+    PRODUCT_PN="SYS-2028BT-HNC0R+"
+    BOARD_PN="X10DRT-B+"
+    ASSET_TAG="111-03955+A0"
+elif [[ "${NODE_TYPE}" == "H500E" ]]; then
+    PRODUCT_NAME="${NODE_TYPE}"
+    SHORT_NT="${NODE_TYPE}"
+    PRODUCT_PN="SYS-2028BT-HNC0R+"
+    BOARD_PN="X10DRT-B+"
+    ASSET_TAG="111-03956+A0"
+elif [[ "${NODE_TYPE}" == "H700E" ]]; then
+    PRODUCT_NAME="${NODE_TYPE}"
+    SHORT_NT="${NODE_TYPE}"
+    PRODUCT_PN="SYS-2028BT-HNC0R+"
+    BOARD_PN="X10DRT-B+"
+    ASSET_TAG="111-03957+A0"
+elif [[ "${NODE_TYPE}" == "H300S" ]]; then
+    PRODUCT_NAME="${NODE_TYPE}"
+    SHORT_NT="${NODE_TYPE}"
+    PRODUCT_PN="SYS-2028BT-HNC0R+"
+    BOARD_PN="X10DRT-B+"
+    ASSET_TAG="111-03958+A0"
+elif [[ "${NODE_TYPE}" == "H500S" ]]; then
+    PRODUCT_NAME="${NODE_TYPE}"
+    SHORT_NT="${NODE_TYPE}"
+    PRODUCT_PN="SYS-2028BT-HNC0R+"
+    BOARD_PN="X10DRT-B+"
+    ASSET_TAG="111-03959+A0"
+elif [[ "${NODE_TYPE}" == "H700S" ]]; then
+    PRODUCT_NAME="${NODE_TYPE}"
+    SHORT_NT="${NODE_TYPE}"
+    PRODUCT_PN="SYS-2028BT-HNC0R+"
+    BOARD_PN="X10DRT-B+"
+    ASSET_TAG="111-03960+A0"
+elif [[ "${NODE_TYPE}" == "H410C14020" ]]; then
+    PRODUCT_NAME=""
+    SHORT_NT="H410C"
+    PRODUCT_PN="${SHORT_NT}"
+    BOARD_PN="${SHORT_NT}"
+    #PRODUCT_PN="SYS-2029BT-HNC0R"
+    #BOARD_PN="X11DPT-B"
+    ASSET_TAG="111-04320+A0"
+elif [[ "${NODE_TYPE}" == "H410C15020" ]]; then
+    PRODUCT_NAME=""
+    SHORT_NT="H410C"
+    PRODUCT_PN="${SHORT_NT}"
+    BOARD_PN="${SHORT_NT}"
+    #PRODUCT_PN="SYS-2029BT-HNC0R"
+    #BOARD_PN="X11DPT-B"
+    ASSET_TAG="111-04321+A0"
+elif [[ "${NODE_TYPE}" == "H410C17020" ]]; then
+    PRODUCT_NAME=""
+    SHORT_NT="H410C"
+    PRODUCT_PN="${SHORT_NT}"
+    BOARD_PN="${SHORT_NT}"
+    #PRODUCT_PN="SYS-2029BT-HNC0R"
+    #BOARD_PN="X11DPT-B"
+    ASSET_TAG="111-04322+A0"
+elif [[ "${NODE_TYPE}" == "H410C25020" ]]; then
+    PRODUCT_NAME=""
+    SHORT_NT="H410C"
+    PRODUCT_PN="${SHORT_NT}"
+    BOARD_PN="${SHORT_NT}"
+    #PRODUCT_PN="SYS-2029BT-HNC0R"
+    #BOARD_PN="X11DPT-B"
+    ASSET_TAG="111-04323+A0"
+elif [[ "${NODE_TYPE}" == "H410C27020" ]]; then
+    PRODUCT_NAME=""
+    SHORT_NT="H410C"
+    PRODUCT_PN="${SHORT_NT}"
+    BOARD_PN="${SHORT_NT}"
+    #PRODUCT_PN="SYS-2029BT-HNC0R"
+    #BOARD_PN="X11DPT-B"
+    ASSET_TAG="111-04324+A0"
+elif [[ "${NODE_TYPE}" == "H410C28020" ]]; then
+    PRODUCT_NAME=""
+    SHORT_NT="H410C"
+    PRODUCT_PN="${SHORT_NT}"
+    BOARD_PN="${SHORT_NT}"
+    #PRODUCT_PN="SYS-2029BT-HNC0R"
+    #BOARD_PN="X11DPT-B"
+    ASSET_TAG="111-04325+A0"
+elif [[ "${NODE_TYPE}" == "H410C35020" ]]; then
+    PRODUCT_NAME=""
+    SHORT_NT="H410C"
+    PRODUCT_PN="${SHORT_NT}"
+    BOARD_PN="${SHORT_NT}"
+    #PRODUCT_PN="SYS-2029BT-HNC0R"
+    #BOARD_PN="X11DPT-B"
+    ASSET_TAG="111-04328+A0"
+elif [[ "${NODE_TYPE}" == "H410C37020" ]]; then
+    PRODUCT_NAME=""
+    SHORT_NT="H410C"
+    PRODUCT_PN="${SHORT_NT}"
+    BOARD_PN="${SHORT_NT}"
+    #PRODUCT_PN="SYS-2029BT-HNC0R"
+    #BOARD_PN="X11DPT-B"
+    ASSET_TAG="111-04329+A0"
+elif [[ "${NODE_TYPE}" == "H410C57020" ]]; then
+    PRODUCT_NAME=""
+    SHORT_NT="H410C"
+    PRODUCT_PN="${SHORT_NT}"
+    BOARD_PN="${SHORT_NT}"
+    #PRODUCT_PN="SYS-2029BT-HNC0R"
+    #BOARD_PN="X11DPT-B"
+    ASSET_TAG="111-04326+A0"
+elif [[ "${NODE_TYPE}" == "H410C58020" ]]; then
+    PRODUCT_NAME=""
+    SHORT_NT="H410C"
+    PRODUCT_PN="${SHORT_NT}"
+    BOARD_PN="${SHORT_NT}"
+    #PRODUCT_PN="SYS-2029BT-HNC0R"
+    #BOARD_PN="X11DPT-B"
+    ASSET_TAG="111-04327+A0"
+else
+    echo "unknown PRODUCT=${PRODUCT}"
+    exit 1
+fi
+
+MANUFACTURER="NetApp"
+CHASSIS_TAG="111-03961+A0"
+
+NODE_SERIAL=$(./ipmicfg/IPMICFG-Linux.x86_64 -tp nodesn)
+CHASSIS_SERIAL=$(./ipmicfg/IPMICFG-Linux.x86_64 -tp chassissn)
+if [[ -z "${CHASSIS_SERIAL}" ]]; then
+    CHASSIS_SERIAL=$(cat /sys/devices/virtual/dmi/id/chassis_serial)
+fi
+
+echo "NetApp-ifying Serial numbers..."
+[[ ${CHASSIS_SERIAL} =~ ^[0-9]{12}$ ]] || CHASSIS_SERIAL=$(printf %012d ${CHASSIS_SERIAL//[A-Za-z]})
+[[ ${NODE_SERIAL} =~ ^[0-9]{12}$ ]] || NODE_SERIAL=$(printf %012d ${NODE_SERIAL//[A-Za-z]})
+
+./ipmicfg/IPMICFG-Linux.x86_64 -tp nodesn ${NODE_SERIAL}
+./ipmicfg/IPMICFG-Linux.x86_64 -tp chassissn ${CHASSIS_SERIAL}
+./ipmicfg/IPMICFG-Linux.x86_64 -tp chassispn ${CHASSIS_TAG}
+
+
+## ./ipmicfg/IPMICFG-Linux.x86_64 -fru dmi
+#Updated DMI map to FRU command:
+# -fru dmi <$1> <$2> <$3> <$4> <$5> <$6> <$7> <$8> <$9> <$10> <$11> <$12> <$13> <$14>
+#  $1 PRODUCT  Manufacturer Name
+#  $2 PRODUCT  Product Name
+#  $3 PRODUCT  Part Number
+#  $4 PRODUCT  Product Version
+#  $5 PRODUCT  Serial Number
+#  $6 PRODUCT  Asset Tag
+#  $7 BOARD    Mfg Date
+#  $8 BOARD    Board Manufacturer
+#  $9 BOARD    Product Name
+# $10 BOARD    Part Number
+# $11 BOARD    Serial Number
+# $12 CHASSIS  Type (HEX value, ex:01, 02, 03...)
+# $13 CHASSIS  Part Number
+# $14 CHASSIS  Serial Number
+#
+# Example: -fru dmi Supermicro "" SYS-F628R3-RC0BPT+ "" S1234567890 "" ...
+#
+./ipmicfg/IPMICFG-Linux.x86_64 -fru dmi \
+  "${MANUFACTURER}" \
+  "${PRODUCT_NAME}" \
+  "${PRODUCT_PN}" \
+  "" \
+  "${NODE_SERIAL}" \
+  "${ASSET_TAG}" \
+  "201808271648" \
+  "${MANUFACTURER}" \
+  "${PRODUCT}" \
+  "${BOARD_PN}" \
+  "${NODE_SERIAL}" \
+  "01" \
+  "${CHASSIS_TAG}" \
+  "${CHASSIS_SERIAL}"
+
+TMP_FILE="/tmp/dmi.config.$$"
+
+cat > ${TMP_FILE} <<  EOF
+Version                          = 0001              // 2-byte hex value. Do not remove this line
+
+[System]
+Manufacturer           {SYMF}    = "${MANUFACTURER}" // string value
+Product                {SYPD}    = "${SHORT_NT}"     // string value
+Version                {SYVS}    = ""                // string value
+Serial Number          {SYSN}    = "${NODE_SERIAL}"  // string value
+SKU Number             {SYKN}    = ""                // string value
+Family                 {SYFM}    = ""                // string value
+
+[Base Board]
+Manufacturer           {BBMF}    = "${MANUFACTURER}"          // string value
+Product                {BBPD}    = "${PRODUCT}"      // string value
+Asset Tag              {BBAT}    = "${ASSET_TAG}"    // string value
+Serial Number          {BBSN}    = "${NODE_SERIAL}"  // string value
+
+[Chassis]
+Manufacturer           {CHMF}    = "${MANUFACTURER}"          // string value
+Type                   {CHTY}    = 01                // 1-byte hex value
+    // Value  : 01h ~ 1Dh
+    //     01h: Other; 02h: Unknown; 03h: Desktop;
+    //     04h: Low Profile Desktop; 05h: Pizza Box; 06h: Mini Tower;
+    //     07h: Tower; 08h: Portable; 09h: LapTop; 0Ah: Notebook;
+    //     0Bh: Hand Held; 0Ch: Docking Station; 0Dh: All in One;
+    //     0Eh: Sub Notebook; 0Fh: Space-saving; 10h: Lunch Box;
+    //     11h: Main Server Chassis; 12h: Expansion Chassis;
+    //     13h: SubChassis; 14h: Bus Expansion Chassis;
+    //     15h: Peripheral Chassis; 16h: RAID Chassis;
+    //     17h: Rack Mount Chassis; 18h: Sealed-case PC;
+    //     19h: Multi-system chassis; 1Ah: Compact PCI;
+    //     1Bh: Advanced TCA; 1Ch: Blade; 1Dh: Blade Enclosure;
+Version                {CHVS}    = ""                // string value
+Serial Number          {CHSN}    = ""                // string value
+Tag Number             {CHTN}    = "${CHASSIS_TAG}"    // string value
+OEM-Defined Value      {CHOD}    = 00000000          // 4-byte hex value
+EOF
+
+./sum/sum -c ChangeDmiInfo --file ${TMP_FILE}
+
+rm ${TMP_FILE}
+
+echo "To perform a full reboot, please execute the following \"touch /tmp/nokexec; reboot\"."
+

@@ -1,0 +1,66 @@
+// Usage notes:
+// Please refer to SUM User's guide '4.2 Format of the DMI information Text File' for more details.
+//
+// Notice for item value editing:
+// 1. Use quotation pair " " to edit string-valued items
+//    Example: ""Supermicro"" => "Supermicro"
+// 2. Use $DEFAULT$ signature without quotation pair to load default string for 
+//    string-valued items
+//    Example: $DEFAULT$ => Default string value
+// 3. Do not use quotation pair for non-string-valued items
+// 4. You can remove unnecessary DMI items so that its value will not be
+//    changed after an update.
+//    Ex:
+//    [BIOS Information]
+//		Version ...
+//		Build Date ...
+//
+//		You can remove Build Date but need to keep [BIOS Information]	
+
+Version                          = 0001                     // 2-byte hex value. Do not remove this line
+
+
+
+[BIOS Information]
+Version                {BIVS}    = "NA2.1"                  // string value
+Build Date             {BIBD}    = "07/10/2017"             // string value
+
+
+
+[System]
+Manufacturer           {SYMF}    = "NetApp"                 // string value
+Product                {SYPD}    = "H700S"                  // string value
+Version                {SYVS}    = ""                     // string value
+Serial Number          {SYSN}    = ""           // string value
+SKU Number             {SYKN}    = ""         // string value
+Family                 {SYFM}    = ""         // string value
+
+
+
+[Base Board]
+Manufacturer           {BBMF}    = "NetApp"                 // string value
+Product                {BBPD}    = "H700S"                  // string value
+Version                {BBVS}    = "1.01"           // string value
+Asset Tag              {BBAT}    = "111-03960+A0"         // string value
+
+
+
+[Chassis]
+Manufacturer           {CHMF}    = "NetApp"                 // string value
+Type                   {CHTY}    = 01                       // 1-byte hex value
+    // Value  : 01h ~ 1Dh
+    //     01h: Other; 02h: Unknown; 03h: Desktop;
+    //     04h: Low Profile Desktop; 05h: Pizza Box; 06h: Mini Tower;
+    //     07h: Tower; 08h: Portable; 09h: LapTop; 0Ah: Notebook;
+    //     0Bh: Hand Held; 0Ch: Docking Station; 0Dh: All in One;
+    //     0Eh: Sub Notebook; 0Fh: Space-saving; 10h: Lunch Box;
+    //     11h: Main Server Chassis; 12h: Expansion Chassis;
+    //     13h: SubChassis; 14h: Bus Expansion Chassis;
+    //     15h: Peripheral Chassis; 16h: RAID Chassis;
+    //     17h: Rack Mount Chassis; 18h: Sealed-case PC;
+    //     19h: Multi-system chassis; 1Ah: Compact PCI;
+    //     1Bh: Advanced TCA; 1Ch: Blade; 1Dh: Blade Enclosure;
+Version                {CHVS}    = ""              // string value
+Serial Number          {CHSN}    = ""           // string value
+Tag Number             {CHTN}    = "111-03961+A0"         // string value
+OEM-Defined Value      {CHOD}    = 00000000                 // 4-byte hex value

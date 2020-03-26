@@ -1,0 +1,27 @@
+#!/bin/bash
+
+TMP_FILE="/tmp/dmi.config.$$"
+
+NODE_SERIAL=$(./ipmicfg/IPMICFG-Linux.x86_64 -tp nodesn)
+CHASSIS_SERIAL=$(./ipmicfg/IPMICFG-Linux.x86_64 -tp chassissn)
+if [[ -z "${CHASSIS_SERIAL}" ]]; then
+    CHASSIS_SERIAL=$(cat /sys/devices/virtual/dmi/id/chassis_serial)
+    ./ipmicfg/IPMICFG-Linux.x86_64 -tp chassissn ${CHASSIS_SERIAL}
+fi
+
+./ipmicfg/IPMICFG-Linux.x86_64 -fru CS ${CHASSIS_SERIAL}
+./ipmicfg/IPMICFG-Linux.x86_64 -fru PS ${NODE_SERIAL}
+
+cat > ${TMP_FILE} <<  EOF
+Version                          = 0001
+
+[System]
+Serial Number          {SYSN}    = "${NODE_SERIAL}"
+
+[Chassis]
+Serial Number          {CHSN}    = "${CHASSIS_SERIAL}"
+EOF
+
+./sum/sum -c ChangeDmiInfo --file ${TMP_FILE}
+
+rm ${TMP_FILE}
